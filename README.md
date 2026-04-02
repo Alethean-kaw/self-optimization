@@ -52,11 +52,11 @@ self-optimization/
 
 ## Key Files
 
-- [SKILL.md](D:\GPT Codex\OpenClaw Skill\self-optimization\SKILL.md): main skill definition and operating model
-- [references/examples.md](D:\GPT Codex\OpenClaw Skill\self-optimization\references\examples.md): concrete examples for learnings, errors, feature requests, promotion, and skill extraction
-- [references/openclaw-integration.md](D:\GPT Codex\OpenClaw Skill\self-optimization\references\openclaw-integration.md): OpenClaw installation and workspace integration
-- [references/hooks-setup.md](D:\GPT Codex\OpenClaw Skill\self-optimization\references\hooks-setup.md): hook configuration for Claude Code, Codex, and related setups
-- [scripts/extract-skill.sh](D:\GPT Codex\OpenClaw Skill\self-optimization\scripts\extract-skill.sh): helper for scaffolding a skill from a durable learning
+- [SKILL.md](./SKILL.md): main skill definition and operating model
+- [references/examples.md](./references/examples.md): concrete examples for learnings, errors, feature requests, promotion, and skill extraction
+- [references/openclaw-integration.md](./references/openclaw-integration.md): OpenClaw installation and workspace integration
+- [references/hooks-setup.md](./references/hooks-setup.md): hook configuration for Claude Code, Codex, and related setups
+- [scripts/extract-skill.sh](./scripts/extract-skill.sh): helper for scaffolding a skill from a durable learning
 
 ## Quick Start
 
@@ -127,10 +127,10 @@ Then fill in the generated `SKILL.md` with the stable workflow, examples, and ca
 
 ## Supporting Files
 
-- [assets/LEARNINGS.md](D:\GPT Codex\OpenClaw Skill\self-optimization\assets\LEARNINGS.md) provides a stronger learning template
-- [assets/SKILL-TEMPLATE.md](D:\GPT Codex\OpenClaw Skill\self-optimization\assets\SKILL-TEMPLATE.md) helps convert proven lessons into standalone skills
-- [scripts/activator.sh](D:\GPT Codex\OpenClaw Skill\self-optimization\scripts\activator.sh) emits a lightweight reminder after prompt submission
-- [scripts/error-detector.sh](D:\GPT Codex\OpenClaw Skill\self-optimization\scripts\error-detector.sh) emits a reminder when tool output looks like a meaningful failure
+- [assets/LEARNINGS.md](./assets/LEARNINGS.md) provides a stronger learning template
+- [assets/SKILL-TEMPLATE.md](./assets/SKILL-TEMPLATE.md) helps convert proven lessons into standalone skills
+- [scripts/activator.sh](./scripts/activator.sh) emits a lightweight reminder after prompt submission
+- [scripts/error-detector.sh](./scripts/error-detector.sh) emits a reminder when tool output looks like a meaningful failure
 
 ## Design Goal
 
