@@ -37,13 +37,24 @@ const handler: HookHandler = async (event) => {
     return;
   }
 
-  if (Array.isArray(event.context.bootstrapFiles)) {
-    event.context.bootstrapFiles.push({
-      path: 'SELF_OPTIMIZATION_REMINDER.md',
-      content: REMINDER_CONTENT,
-      virtual: true,
-    });
+  if (!Array.isArray(event.context.bootstrapFiles)) {
+    return;
   }
+
+  const reminderPath = 'SELF_OPTIMIZATION_REMINDER.md';
+  const alreadyInjected = event.context.bootstrapFiles.some(
+    (file) => file && typeof file === 'object' && file.path === reminderPath,
+  );
+
+  if (alreadyInjected) {
+    return;
+  }
+
+  event.context.bootstrapFiles.push({
+    path: reminderPath,
+    content: REMINDER_CONTENT,
+    virtual: true,
+  });
 };
 
 export default handler;
