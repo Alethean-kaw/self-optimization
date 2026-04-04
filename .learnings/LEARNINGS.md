@@ -2,9 +2,16 @@
 
 Corrections, knowledge gaps, improved workflows, and durable prevention rules captured during development.
 
-Use the `LRN-YYYYMMDD-XXX` format for entries.
+**Categories**: correction | insight | knowledge_gap | best_practice
+**Areas**: frontend | backend | infra | tests | docs | config
+**Statuses**: pending | in_progress | resolved | wont_fix | promoted | promoted_to_skill
 
-## Entry Template
+## Purpose
+
+Use this file to record things future sessions should avoid rediscovering.
+Prefer concise prevention rules over diary-style notes.
+
+## Entry Skeleton
 
 ````markdown
 ## [LRN-YYYYMMDD-XXX] category
@@ -35,3 +42,32 @@ What to do differently next time.
 
 ---
 ````
+
+## Status Definitions
+
+| Status | Meaning |
+|--------|---------|
+| `pending` | Logged but not yet integrated or promoted |
+| `in_progress` | Currently being addressed |
+| `resolved` | Fix or understanding is now confirmed |
+| `wont_fix` | Intentionally not pursued |
+| `promoted` | Distilled into durable repo or workspace guidance |
+| `promoted_to_skill` | Turned into a reusable skill |
+
+## Promotion Hints
+
+- Promote to `CLAUDE.md` for project facts and conventions
+- Promote to `AGENTS.md` for workflows and automation
+- Promote to `TOOLS.md` for tool-specific gotchas
+- Promote to `SOUL.md` for behavioral rules
+
+## Skill Extraction Fields
+
+When a learning becomes a reusable skill, add:
+
+```markdown
+**Status**: promoted_to_skill
+**Skill-Path**: [actual installed skill path]
+```
+
+---

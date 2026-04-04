@@ -67,7 +67,7 @@ When a learning becomes a reusable skill, add:
 
 ```markdown
 **Status**: promoted_to_skill
-**Skill-Path**: skills/skill-name
+**Skill-Path**: [actual installed skill path]
 ```
 
 ---

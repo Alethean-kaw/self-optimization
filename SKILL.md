@@ -239,10 +239,14 @@ Use the helper:
 ./skills/self-optimization/scripts/extract-skill.sh my-new-skill
 ```
 
+By default, the helper creates the new skill beside `self-optimization` under the
+same `skills/` root. Use `--output-dir` to override the destination relative to
+your current directory.
+
 Then customize the generated `SKILL.md` and update the original learning entry with:
 
 - `Status: promoted_to_skill`
-- `Skill-Path: skills/my-new-skill`
+- `Skill-Path: use the installed skill path reported by the extractor`
 
 ## Review Rhythm
 
@@ -313,7 +317,7 @@ Use hook scripts in settings:
 {
   "hooks": {
     "UserPromptSubmit": [{
-      "matcher": "",
+      "matcher": "fix|debug|error|failure|regression|incident|workaround|retry|flaky",
       "hooks": [{
         "type": "command",
         "command": "./skills/self-optimization/scripts/activator.sh"

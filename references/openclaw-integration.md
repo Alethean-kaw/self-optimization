@@ -65,11 +65,9 @@ openclaw hooks enable self-optimization
 mkdir -p ~/.openclaw/workspace/.learnings
 ```
 
-Or create them inside the installed skill area if your setup prefers that layout:
-
-```bash
-mkdir -p ~/.openclaw/skills/self-optimization/.learnings
-```
+Keep `.learnings/` in the workspace as the canonical inbox. Avoid storing learnings
+inside the installed skill directory, or recurrence tracking and promotion review
+will fragment across multiple locations.
 
 ## Promotion Model
 

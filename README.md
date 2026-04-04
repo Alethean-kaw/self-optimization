@@ -123,14 +123,18 @@ When a pattern is repeatable and broadly useful, scaffold a new skill:
 ./skills/self-optimization/scripts/extract-skill.sh my-new-skill
 ```
 
+By default, the helper creates the new skill beside `self-optimization` under the
+same `skills/` root. Use `--output-dir` to override the destination relative to
+your current directory.
+
 Then fill in the generated `SKILL.md` with the stable workflow, examples, and caveats.
 
 ## Supporting Files
 
 - [assets/LEARNINGS.md](./assets/LEARNINGS.md) provides a stronger learning template
 - [assets/SKILL-TEMPLATE.md](./assets/SKILL-TEMPLATE.md) helps convert proven lessons into standalone skills
-- [scripts/activator.sh](./scripts/activator.sh) emits a lightweight reminder after prompt submission
-- [scripts/error-detector.sh](./scripts/error-detector.sh) emits a reminder when tool output looks like a meaningful failure
+- [scripts/activator.sh](./scripts/activator.sh) emits a lightweight reminder after prompt submission without repeating every turn
+- [scripts/error-detector.sh](./scripts/error-detector.sh) emits a reminder when tool output looks like a meaningful failure without flagging success summaries like `0 failed`
 
 ## Design Goal
 

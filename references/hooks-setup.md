@@ -9,6 +9,10 @@ The included hooks are intentionally lightweight:
 - `activator.sh` reminds the agent to capture durable signal after a prompt
 - `error-detector.sh` reminds the agent to log meaningful failures after tool use
 
+By default, `activator.sh` prints once per session when a known session id is available.
+Otherwise it falls back to a 30-minute workspace cooldown. Override with
+`SELF_OPTIMIZATION_REMINDER_COOLDOWN_SECONDS`.
+
 ## Claude Code
 
 Project-level `.claude/settings.json`:
@@ -18,7 +22,7 @@ Project-level `.claude/settings.json`:
   "hooks": {
     "UserPromptSubmit": [
       {
-        "matcher": "",
+        "matcher": "fix|debug|error|failure|regression|incident|workaround|retry|flaky",
         "hooks": [
           {
             "type": "command",
@@ -49,7 +53,7 @@ User-level activation:
   "hooks": {
     "UserPromptSubmit": [
       {
-        "matcher": "",
+        "matcher": "fix|debug|error|failure|regression|incident|workaround|retry|flaky",
         "hooks": [
           {
             "type": "command",
@@ -71,7 +75,7 @@ User-level activation:
   "hooks": {
     "UserPromptSubmit": [
       {
-        "matcher": "",
+        "matcher": "fix|debug|error|failure|regression|incident|workaround|retry|flaky",
         "hooks": [
           {
             "type": "command",
@@ -140,11 +144,15 @@ Use an absolute path if your working directory varies:
 
 ### Too much overhead
 
-Use only `UserPromptSubmit`, or narrow activation with a matcher:
+Use a narrower matcher or increase the reminder cooldown:
 
 ```json
 {
-  "matcher": "fix|debug|error|issue",
+  "matcher": "debug|error|incident",
   "hooks": []
 }
+```
+
+```bash
+export SELF_OPTIMIZATION_REMINDER_COOLDOWN_SECONDS=3600
 ```
