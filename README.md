@@ -94,13 +94,7 @@ node ./dist/cli.js log --type learning \
 ### Install In OpenClaw
 
 ```bash
-clawdhub install self-optimization
-```
-
-Or install manually:
-
-```bash
-cp -r self-optimization ~/.openclaw/skills/
+git clone <your-fork-or-source-repo> ~/.openclaw/skills/self-optimization
 ```
 
 If you are working from source, build the CLI once:

@@ -13,16 +13,8 @@ Together, those make it easier to turn single-session lessons into repeatable op
 
 ## Install
 
-### ClawdHub
-
 ```bash
-clawdhub install self-optimization
-```
-
-### Manual
-
-```bash
-cp -r self-optimization ~/.openclaw/skills/
+git clone <your-fork-or-source-repo> ~/.openclaw/skills/self-optimization
 ```
 
 If you are working from source, build the CLI once:

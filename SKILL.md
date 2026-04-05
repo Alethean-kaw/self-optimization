@@ -213,12 +213,6 @@ OpenClaw works especially well with this skill because workspace files and hooks
 ### Install
 
 ```bash
-clawdhub install self-optimization
-```
-
-Manual install:
-
-```bash
 git clone <your-fork-or-source-repo> ~/.openclaw/skills/self-optimization
 ```
 
