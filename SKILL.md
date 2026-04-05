@@ -1,12 +1,43 @@
 ---
 name: self-optimization
-description: "Turn mistakes, corrections, dead ends, and repeated fixes into durable improvements. Use when work reveals a non-obvious lesson, a recurring failure, a missing capability, or a rule that should be promoted into agent memory, workflow guidance, or a reusable skill."
+description: "Capture durable lessons from corrections, failures, and repeated work. Use when a task reveals a reusable rule, a recurring problem, or a missing capability that should be logged, promoted into guidance, or extracted into a skill."
 metadata:
 ---
 
 # Self-Optimization
 
 Use this skill to close the loop after real work. The goal is not just to log what went wrong. The goal is to convert signal from mistakes, corrections, and repeated effort into stronger future behavior.
+
+## What This Skill Is For
+
+Use this skill when work reveals something that should remain useful after the current session ends.
+
+- a correction, missing fact, or undocumented convention
+- a non-obvious command, tool, or integration failure
+- a repeatable workflow improvement
+- a missing capability that should become a feature request
+- a stable pattern that should be promoted into guidance or extracted into a reusable skill
+
+The value of this skill is that it turns one-off debugging and corrections into durable memory, clearer guidance, and reusable workflows.
+
+## Current Capabilities
+
+This skill is backed by a CLI-first toolkit, so it can help with both reminding and doing.
+
+- `remind`: emits a lightweight self-optimization reminder with session-aware de-duplication and cooldown fallback
+- `detect-error`: detects meaningful failures from tool output or exit codes and emits a structured reminder block
+- `init`: creates the canonical workspace `.learnings/` inbox
+- `log`: appends structured learning, error, and feature entries with generated IDs and timestamps
+- `extract-skill`: scaffolds a reusable skill and can prefill it from an existing learning entry
+- `doctor`: checks CLI build health, workspace learnings files, hook documentation alignment, and promotion metadata
+
+## How To Use It
+
+In practice, this skill is used in three ways:
+
+1. Let hooks call `remind` and `detect-error` so useful signal is surfaced during normal work.
+2. Use `log` to capture durable learnings in workspace `.learnings/`.
+3. Use `doctor`, promotion targets, and `extract-skill` to turn proven patterns into guidance or reusable skills.
 
 ## Core Loop
 
@@ -20,13 +51,13 @@ Use this skill to close the loop after real work. The goal is not just to log wh
 
 | Situation | Action |
 |-----------|--------|
-| Command, tool, or integration fails unexpectedly | Append an entry to `.learnings/ERRORS.md` |
-| User corrects the agent or provides missing facts | Append an entry to `.learnings/LEARNINGS.md` |
-| A better repeatable approach is discovered | Append an entry to `.learnings/LEARNINGS.md` |
-| User asks for a missing capability | Append an entry to `.learnings/FEATURE_REQUESTS.md` |
+| Command, tool, or integration fails unexpectedly | Run `node ./dist/cli.js log --type error ...` |
+| User corrects the agent or provides missing facts | Run `node ./dist/cli.js log --type learning ...` |
+| A better repeatable approach is discovered | Run `node ./dist/cli.js log --type learning ...` |
+| User asks for a missing capability | Run `node ./dist/cli.js log --type feature ...` |
 | Same issue keeps reappearing | Link entries, bump priority, and consider promotion |
 | Pattern is stable across tasks | Promote to `AGENTS.md`, `CLAUDE.md`, `TOOLS.md`, `SOUL.md`, or `.github/copilot-instructions.md` |
-| Pattern is reusable beyond one repo | Extract a new skill scaffold |
+| Pattern is reusable beyond one repo | Run `node ./dist/cli.js extract-skill <skill-name>` |
 
 ## Detection Triggers
 
@@ -52,6 +83,12 @@ Create a local `.learnings/` directory in the workspace or in the OpenClaw works
 └── FEATURE_REQUESTS.md
 ```
 
+Use the CLI to create the inbox:
+
+```bash
+node ./dist/cli.js init
+```
+
 ### `LEARNINGS.md`
 
 Use for:
@@ -62,38 +99,6 @@ Use for:
 - project conventions
 - improved workflows
 
-Template:
-
-````markdown
-## [LRN-YYYYMMDD-XXX] category
-
-**Logged**: 2026-04-01T10:00:00Z
-**Priority**: low | medium | high | critical
-**Status**: pending
-**Area**: frontend | backend | infra | tests | docs | config
-
-### Summary
-One-line statement of the lesson.
-
-### Details
-What was wrong, what changed, and what is now known to be correct.
-
-### Suggested Action
-What to do differently next time.
-
-### Metadata
-- Source: conversation | debugging | user_feedback | simplify-and-harden
-- Related Files: path/to/file
-- Tags: tag-a, tag-b
-- See Also: LRN-20260401-001
-- Pattern-Key: optional.stable.key
-- Recurrence-Count: 1
-- First-Seen: 2026-04-01
-- Last-Seen: 2026-04-01
-
----
-````
-
 ### `ERRORS.md`
 
 Use for:
@@ -103,40 +108,6 @@ Use for:
 - bad tool assumptions
 - API or integration breakage
 
-Template:
-
-````markdown
-## [ERR-YYYYMMDD-XXX] command_or_tool
-
-**Logged**: 2026-04-01T10:00:00Z
-**Priority**: medium
-**Status**: pending
-**Area**: backend | infra | tests | docs | config
-
-### Summary
-Short description of the failure.
-
-### Error
-```text
-Actual error output goes here.
-```
-
-### Context
-- Command or action attempted
-- Relevant inputs
-- Environment details if useful
-
-### Suggested Fix
-What should be tried next or documented.
-
-### Metadata
-- Reproducible: yes | no | unknown
-- Related Files: path/to/file
-- See Also: ERR-20260401-001
-
----
-````
-
 ### `FEATURE_REQUESTS.md`
 
 Use for:
@@ -145,35 +116,6 @@ Use for:
 - automation requests
 - product gaps
 - missing agent behaviors
-
-Template:
-
-````markdown
-## [FEAT-YYYYMMDD-XXX] capability_name
-
-**Logged**: 2026-04-01T10:00:00Z
-**Priority**: low | medium | high
-**Status**: pending
-**Area**: frontend | backend | infra | tests | docs | config
-
-### Requested Capability
-What the user wanted.
-
-### User Context
-Why they wanted it.
-
-### Complexity Estimate
-simple | medium | complex
-
-### Suggested Implementation
-How it might be built or extended.
-
-### Metadata
-- Frequency: first_time | recurring
-- Related Features: existing_feature
-
----
-````
 
 ## ID Format
 
@@ -206,7 +148,7 @@ Promotion checklist:
 1. Distill the learning into a short prevention rule.
 2. Add it to the right target file.
 3. Update the original entry status to `promoted`.
-4. Record where it was promoted.
+4. Record where it was promoted with `Promoted-To:` or `Skill-Path:`.
 
 ## Recurrence And Dedupe
 
@@ -235,13 +177,14 @@ Extract a reusable skill when the pattern is:
 Use the helper:
 
 ```bash
-./skills/self-optimization/scripts/extract-skill.sh my-new-skill --dry-run
-./skills/self-optimization/scripts/extract-skill.sh my-new-skill
+node ./dist/cli.js extract-skill my-new-skill --dry-run
+node ./dist/cli.js extract-skill my-new-skill
+node ./dist/cli.js extract-skill my-new-skill --from-learning-id LRN-20260405-001 --source-learning-file ../my-workspace/.learnings/LEARNINGS.md
 ```
 
-By default, the helper creates the new skill beside `self-optimization` under the
-same `skills/` root. Use `--output-dir` to override the destination relative to
-your current directory.
+By default, extraction writes beside `self-optimization` when the package is installed under a `skills/` root. In a repo checkout, it writes to `./skills` under the package root. Use `--output-dir` to override the destination relative to your current directory.
+
+To prefill from a learning ID, run the command from the workspace that owns `.learnings/LEARNINGS.md` or pass `--source-learning-file` explicitly.
 
 Then customize the generated `SKILL.md` and update the original learning entry with:
 
@@ -260,9 +203,7 @@ Review `.learnings/` at these checkpoints:
 Useful checks:
 
 ```bash
-grep -h "Status\\*\\*: pending" .learnings/*.md | wc -l
-grep -B5 "Priority\\*\\*: high" .learnings/*.md | grep "^## \\["
-grep -l "Area\\*\\*: backend" .learnings/*.md
+node ./dist/cli.js doctor
 ```
 
 ## OpenClaw Setup
@@ -281,7 +222,12 @@ Manual install:
 git clone <your-fork-or-source-repo> ~/.openclaw/skills/self-optimization
 ```
 
-This package is an OpenClaw-oriented evolution of the earlier self-learning workflow.
+If you are working from source, build the CLI once:
+
+```bash
+npm ci
+npm run build
+```
 
 ### Hook Setup
 
@@ -311,7 +257,7 @@ openclaw hooks enable self-optimization
 
 ### Claude Code / Codex
 
-Use hook scripts in settings:
+Use CLI commands in settings:
 
 ```json
 {
@@ -320,14 +266,14 @@ Use hook scripts in settings:
       "matcher": "fix|debug|error|failure|regression|incident|workaround|retry|flaky",
       "hooks": [{
         "type": "command",
-        "command": "./skills/self-optimization/scripts/activator.sh"
+        "command": "node ./skills/self-optimization/dist/cli.js remind"
       }]
     }],
     "PostToolUse": [{
       "matcher": "Bash",
       "hooks": [{
         "type": "command",
-        "command": "./skills/self-optimization/scripts/error-detector.sh"
+        "command": "node ./skills/self-optimization/dist/cli.js detect-error"
       }]
     }]
   }

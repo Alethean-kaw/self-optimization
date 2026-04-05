@@ -16,31 +16,31 @@ Before wrapping up work, check whether today's effort uncovered durable signal:
 Promote stable patterns into \`AGENTS.md\`, \`CLAUDE.md\`, \`TOOLS.md\`, or \`SOUL.md\`.
 Extract a reusable skill when the solution is broad, verified, and repeatable.`;
 const handler = async (event) => {
-  if (!event || typeof event !== 'object') {
-    return;
-  }
-  if (event.type !== 'agent' || event.action !== 'bootstrap') {
-    return;
-  }
-  if (!event.context || typeof event.context !== 'object') {
-    return;
-  }
-  const sessionKey = event.sessionKey || '';
-  if (sessionKey.includes(':subagent:')) {
-    return;
-  }
-  if (!Array.isArray(event.context.bootstrapFiles)) {
-    return;
-  }
-  const reminderPath = 'SELF_OPTIMIZATION_REMINDER.md';
-  const alreadyInjected = event.context.bootstrapFiles.some((file) => file && typeof file === 'object' && file.path === reminderPath);
-  if (alreadyInjected) {
-    return;
-  }
-  event.context.bootstrapFiles.push({
-    path: reminderPath,
-    content: REMINDER_CONTENT,
-    virtual: true
-  });
+    if (!event || typeof event !== 'object') {
+        return;
+    }
+    if (event.type !== 'agent' || event.action !== 'bootstrap') {
+        return;
+    }
+    if (!event.context || typeof event.context !== 'object') {
+        return;
+    }
+    const sessionKey = event.sessionKey || '';
+    if (sessionKey.includes(':subagent:')) {
+        return;
+    }
+    if (!Array.isArray(event.context.bootstrapFiles)) {
+        return;
+    }
+    const reminderPath = 'SELF_OPTIMIZATION_REMINDER.md';
+    const alreadyInjected = event.context.bootstrapFiles.some((file) => file && typeof file === 'object' && file.path === reminderPath);
+    if (alreadyInjected) {
+        return;
+    }
+    event.context.bootstrapFiles.push({
+        path: reminderPath,
+        content: REMINDER_CONTENT,
+        virtual: true,
+    });
 };
 export default handler;

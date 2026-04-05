@@ -39,6 +39,7 @@ What to do differently next time.
 - Recurrence-Count: 1
 - First-Seen: 2026-04-01
 - Last-Seen: 2026-04-01
+- Promoted-To: AGENTS.md | CLAUDE.md | TOOLS.md | SOUL.md
 
 ---
 ````

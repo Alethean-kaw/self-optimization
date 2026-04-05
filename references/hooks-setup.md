@@ -6,12 +6,10 @@ Configure automatic `self-optimization` reminders for supported coding agents.
 
 The included hooks are intentionally lightweight:
 
-- `activator.sh` reminds the agent to capture durable signal after a prompt
-- `error-detector.sh` reminds the agent to log meaningful failures after tool use
+- `node ./skills/self-optimization/dist/cli.js remind` nudges the agent to capture durable signal after a matching prompt
+- `node ./skills/self-optimization/dist/cli.js detect-error` nudges the agent to log meaningful failures after tool use
 
-By default, `activator.sh` prints once per session when a known session id is available.
-Otherwise it falls back to a 30-minute workspace cooldown. Override with
-`SELF_OPTIMIZATION_REMINDER_COOLDOWN_SECONDS`.
+`remind` prints once per session when a known session id is available. Otherwise it falls back to a 30-minute workspace cooldown. Override with `SELF_OPTIMIZATION_REMINDER_COOLDOWN_SECONDS`.
 
 ## Claude Code
 
@@ -26,7 +24,7 @@ Project-level `.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "./skills/self-optimization/scripts/activator.sh"
+            "command": "node ./skills/self-optimization/dist/cli.js remind"
           }
         ]
       }
@@ -37,7 +35,7 @@ Project-level `.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "./skills/self-optimization/scripts/error-detector.sh"
+            "command": "node ./skills/self-optimization/dist/cli.js detect-error"
           }
         ]
       }
@@ -57,7 +55,7 @@ User-level activation:
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/skills/self-optimization/scripts/activator.sh"
+            "command": "node ~/.claude/skills/self-optimization/dist/cli.js remind"
           }
         ]
       }
@@ -79,7 +77,18 @@ User-level activation:
         "hooks": [
           {
             "type": "command",
-            "command": "./skills/self-optimization/scripts/activator.sh"
+            "command": "node ./skills/self-optimization/dist/cli.js remind"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./skills/self-optimization/dist/cli.js detect-error"
           }
         ]
       }
@@ -103,12 +112,13 @@ After debugging non-obvious issues or learning a repeatable project rule:
 
 ## Verification
 
-### Activator
+### Reminder Hook
 
 1. Enable the hook.
 2. Start a fresh session.
-3. Send any prompt.
+3. Use a prompt that matches the configured `matcher`, for example `debug the flaky checkout timeout`.
 4. Confirm the context includes `<self-optimization-reminder>`.
+5. If you want to test with any prompt, temporarily set `matcher` to `""`.
 
 ### Error Detector
 
@@ -116,29 +126,28 @@ After debugging non-obvious issues or learning a repeatable project rule:
 2. Run a failing command.
 3. Confirm the context includes `<self-optimization-error>`.
 
-### Extract Script
+### Extract Skill
 
 ```bash
-./skills/self-optimization/scripts/extract-skill.sh test-skill --dry-run
+node ./dist/cli.js extract-skill test-skill --dry-run
 ```
 
 ## Troubleshooting
 
-### Permission denied
+### CLI not built
 
 ```bash
-chmod +x ./skills/self-optimization/scripts/activator.sh
-chmod +x ./skills/self-optimization/scripts/error-detector.sh
-chmod +x ./skills/self-optimization/scripts/extract-skill.sh
+npm ci
+npm run build
 ```
 
-### Script not found
+### Command path issues
 
 Use an absolute path if your working directory varies:
 
 ```json
 {
-  "command": "/absolute/path/to/skills/self-optimization/scripts/activator.sh"
+  "command": "node /absolute/path/to/skills/self-optimization/dist/cli.js remind"
 }
 ```
 

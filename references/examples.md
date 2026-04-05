@@ -96,11 +96,12 @@ handlers and middleware.
 - Recurrence-Count: 3
 - First-Seen: 2026-03-20
 - Last-Seen: 2026-04-01
+- Promoted-To: CLAUDE.md, AGENTS.md
 
 ### Resolution
 - **Resolved**: 2026-04-01T11:15:00Z
 - **Commit/PR**: docs only
-- **Notes**: Promoted to `CLAUDE.md` and `AGENTS.md` as a prevention rule
+- **Notes**: Promoted as a prevention rule
 
 ---
 ````
@@ -139,40 +140,6 @@ Use `--platform linux/amd64` for the build or choose an ARM-compatible base imag
 ---
 ````
 
-## Error: Repeated Incident Worth Promotion
-
-````markdown
-## [ERR-20260401-002] payment_timeout
-
-**Logged**: 2026-04-01T12:40:00Z
-**Priority**: critical
-**Status**: pending
-**Area**: backend
-
-### Summary
-Checkout flow times out against the payment provider during peak traffic
-
-### Error
-```text
-TimeoutError: POST https://payments.example.com/charge exceeded 30000ms
-```
-
-### Context
-- Endpoint: `POST /api/checkout`
-- Observed during lunch and evening traffic spikes
-- Current retry strategy: none
-
-### Suggested Fix
-Add retries with backoff and introduce a circuit breaker to avoid cascading failures.
-
-### Metadata
-- Reproducible: yes
-- Related Files: src/services/payment.ts
-- See Also: ERR-20260326-002, ERR-20260329-001
-
----
-````
-
 ## Feature Request: Missing Capability
 
 ````markdown
@@ -203,40 +170,6 @@ Add an `--output csv` mode alongside the existing structured output formats.
 ---
 ````
 
-## Feature Request: Resolved And Promoted
-
-````markdown
-## [FEAT-20260401-002] dark_mode
-
-**Logged**: 2026-04-01T14:10:00Z
-**Priority**: low
-**Status**: resolved
-**Area**: frontend
-
-### Requested Capability
-Dashboard dark mode
-
-### User Context
-Users work late and find the bright theme fatiguing.
-
-### Complexity Estimate
-medium
-
-### Suggested Implementation
-Use CSS variables, add a user toggle, and support system theme detection.
-
-### Metadata
-- Frequency: recurring
-- Related Features: settings, theming
-
-### Resolution
-- **Resolved**: 2026-04-08T17:30:00Z
-- **Commit/PR**: #142
-- **Notes**: Implemented and summarized into frontend theming guidance
-
----
-````
-
 ## Learning: Promoted To Skill
 
 ````markdown
@@ -245,7 +178,6 @@ Use CSS variables, add a user toggle, and support system theme detection.
 **Logged**: 2026-04-01T15:00:00Z
 **Priority**: high
 **Status**: promoted_to_skill
-**Skill-Path**: skills/docker-platform-fixes
 **Area**: infra
 
 ### Summary
@@ -267,12 +199,13 @@ sessions can apply the same fix quickly.
 - Recurrence-Count: 3
 - First-Seen: 2026-03-21
 - Last-Seen: 2026-04-01
+- Skill-Path: ~/.openclaw/skills/docker-platform-fixes
 - See Also: ERR-20260401-001, ERR-20260321-003
 
 ### Resolution
 - **Resolved**: 2026-04-01T15:20:00Z
 - **Commit/PR**: docs only
-- **Notes**: Extracted to `skills/docker-platform-fixes`
+- **Notes**: Extracted to an installed skill path
 
 ---
 ````

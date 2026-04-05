@@ -25,6 +25,13 @@ clawdhub install self-optimization
 cp -r self-optimization ~/.openclaw/skills/
 ```
 
+If you are working from source, build the CLI once:
+
+```bash
+npm ci
+npm run build
+```
+
 ## Optional Hook
 
 Copy the provided hook:
@@ -62,12 +69,11 @@ openclaw hooks enable self-optimization
 ## Create Learning Files
 
 ```bash
-mkdir -p ~/.openclaw/workspace/.learnings
+cd ~/.openclaw/workspace
+node ../skills/self-optimization/dist/cli.js init
 ```
 
-Keep `.learnings/` in the workspace as the canonical inbox. Avoid storing learnings
-inside the installed skill directory, or recurrence tracking and promotion review
-will fragment across multiple locations.
+Keep `.learnings/` in the workspace as the canonical inbox. Avoid storing learnings inside the installed skill directory, or recurrence tracking and promotion review will fragment across multiple locations.
 
 ## Promotion Model
 
@@ -101,6 +107,13 @@ Check the workspace and loaded skills:
 
 ```bash
 openclaw status
+```
+
+Run a full package health check:
+
+```bash
+cd ~/.openclaw/workspace
+node ../skills/self-optimization/dist/cli.js doctor
 ```
 
 ## Troubleshooting
